@@ -69,7 +69,8 @@ namespace vMenuClient.menus
 
                         for (var cat = 0; cat < 23; cat++)
                         {
-                            var className = classRenaming[GetLabelText($"VEH_CLASS_{cat}")] ?? GetLabelText($"VEH_CLASS_{cat}");
+                            var actualClassName = GetLabelText($"VEH_CLASS_{cat}");
+                            var className = classRenaming.ContainsKey(actualClassName) ? classRenaming[actualClassName] : actualClassName;
 
                             var categoryMenu = new Menu("Addon Spawner", className);
                             var categoryBtn = new MenuItem(className, $"Spawn an addon vehicle from the {className} class.") { Label = "→→→" };
@@ -272,7 +273,8 @@ namespace vMenuClient.menus
             for (var vehClass = 0; vehClass < 23; vehClass++)
             {
                 // Get the class name.
-                var className = classRenaming[GetLabelText($"VEH_CLASS_{vehClass}")] ?? GetLabelText($"VEH_CLASS_{vehClass}");
+                
+                var className = GetLabelText($"VEH_CLASS_{vehClass}");
 
                 // Create a button & a menu for it, add the menu to the menu pool and add & bind the button to the menu.
                 var btn = new MenuItem(className, $"Spawn a vehicle from the ~o~{className} ~s~class.")
