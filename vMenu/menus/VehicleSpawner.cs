@@ -29,6 +29,11 @@ namespace vMenuClient.menus
             // Create the menu.
             menu = new Menu(Game.Player.Name, "Vehicle Spawner");
 
+            var classRenaming = new Dictionary<string, string>() {
+                {"Compacts", "Compact vehicles"},
+                {"SUVs", "Sports Utility Vehicle"}
+            };
+
             // Create the buttons and checkboxes.
             var spawnByName = new MenuItem("Spawn Vehicle By Model Name", "Enter the name of a vehicle to spawn.");
             var spawnInVeh = new MenuCheckboxItem("Spawn Inside Vehicle", "This will teleport you into the vehicle when you spawn it.", SpawnInVehicle);
@@ -64,8 +69,10 @@ namespace vMenuClient.menus
 
                         for (var cat = 0; cat < 23; cat++)
                         {
-                            var categoryMenu = new Menu("Addon Spawner", GetLabelText($"VEH_CLASS_{cat}"));
-                            var categoryBtn = new MenuItem(GetLabelText($"VEH_CLASS_{cat}"), $"Spawn an addon vehicle from the {GetLabelText($"VEH_CLASS_{cat}")} class.") { Label = "→→→" };
+                            var className = classRenaming[GetLabelText($"VEH_CLASS_{cat}")] ?? GetLabelText($"VEH_CLASS_{cat}");
+
+                            var categoryMenu = new Menu("Addon Spawner", className);
+                            var categoryBtn = new MenuItem(className, $"Spawn an addon vehicle from the {className} class.") { Label = "→→→" };
 
                             addonCarsMenu.AddMenuItem(categoryBtn);
 
@@ -265,7 +272,7 @@ namespace vMenuClient.menus
             for (var vehClass = 0; vehClass < 23; vehClass++)
             {
                 // Get the class name.
-                var className = GetLabelText($"VEH_CLASS_{vehClass}");
+                var className = classRenaming[GetLabelText($"VEH_CLASS_{vehClass}")] ?? GetLabelText($"VEH_CLASS_{vehClass}");
 
                 // Create a button & a menu for it, add the menu to the menu pool and add & bind the button to the menu.
                 var btn = new MenuItem(className, $"Spawn a vehicle from the ~o~{className} ~s~class.")
